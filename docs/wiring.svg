@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" width="920" height="520" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Logitech Driving Force Shifter to nice!nano v2 wiring</title>
+  <rect width="920" height="520" fill="#ffffff"/>
+
+  <text x="460" y="30" text-anchor="middle" font-size="18" font-weight="600" fill="#1f2328">Shifter cable (DE-9 plug removed) → nice!nano v2, seen from the top, USB up</text>
+
+  <!-- board -->
+  <rect x="400" y="50" width="60" height="26" rx="3" fill="#8c959f"/>
+  <text x="430" y="68" text-anchor="middle" font-size="11" fill="#ffffff">USB-C</text>
+  <rect x="330" y="72" width="200" height="370" rx="8" fill="#1f6feb" stroke="#0b3d91" stroke-width="2"/>
+  <text x="430" y="420" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">nice!nano v2</text>
+
+  <!-- left column pads: P0.06 P0.08 GND GND P0.17 P0.20 P0.22 P0.24 P1.00 P0.11 P1.04 P1.06 -->
+  <g font-size="11" fill="#ffffff">
+    <circle cx="345" cy="100" r="7" fill="#d0d7de"/><text x="358" y="104">P0.06 · D1/TX</text>
+    <circle cx="345" cy="126" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="358" y="130" font-weight="700">P0.08 · D0/RX</text>
+    <circle cx="345" cy="152" r="7" fill="#d0d7de"/><text x="358" y="156">GND</text>
+    <circle cx="345" cy="178" r="7" fill="#d0d7de"/><text x="358" y="182">GND</text>
+    <circle cx="345" cy="204" r="7" fill="#d0d7de"/><text x="358" y="208">P0.17 · D2</text>
+    <circle cx="345" cy="230" r="7" fill="#d0d7de"/><text x="358" y="234">P0.20 · D3</text>
+    <circle cx="345" cy="256" r="7" fill="#d0d7de"/><text x="358" y="260">P0.22 · D4</text>
+    <circle cx="345" cy="282" r="7" fill="#d0d7de"/><text x="358" y="286">P0.24 · D5</text>
+    <circle cx="345" cy="308" r="7" fill="#d0d7de"/><text x="358" y="312">P1.00 · D6</text>
+    <circle cx="345" cy="334" r="7" fill="#d0d7de"/><text x="358" y="338">P0.11 · D7</text>
+    <circle cx="345" cy="360" r="7" fill="#d0d7de"/><text x="358" y="364">P1.04 · D8</text>
+    <circle cx="345" cy="386" r="7" fill="#d0d7de"/><text x="358" y="390">P1.06 · D9</text>
+  </g>
+
+  <!-- right column pads: B+ GND RST VCC P0.31 P0.29 P0.02 P1.15 P1.13 P1.11 P0.10 P0.09 -->
+  <g font-size="11" fill="#ffffff" text-anchor="end">
+    <circle cx="515" cy="100" r="7" fill="#d0d7de"/><text x="502" y="104">B+ / RAW ✕</text>
+    <circle cx="515" cy="126" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="502" y="130" font-weight="700">GND</text>
+    <circle cx="515" cy="152" r="7" fill="#d0d7de"/><text x="502" y="156">RST</text>
+    <circle cx="515" cy="178" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="502" y="182" font-weight="700">VCC (3.3 V)</text>
+    <circle cx="515" cy="204" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="502" y="208" font-weight="700">P0.31 · A3</text>
+    <circle cx="515" cy="230" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="502" y="234" font-weight="700">P0.29 · A2</text>
+    <circle cx="515" cy="256" r="7" fill="#d0d7de"/><text x="502" y="260">P0.02 · A1</text>
+    <circle cx="515" cy="282" r="7" fill="#d0d7de"/><text x="502" y="286">P1.15 · A0</text>
+    <circle cx="515" cy="308" r="7" fill="#d0d7de"/><text x="502" y="312">P1.13 · 15</text>
+    <circle cx="515" cy="334" r="7" fill="#d0d7de"/><text x="502" y="338">P1.11 · 14</text>
+    <circle cx="515" cy="360" r="7" fill="#d0d7de"/><text x="502" y="364">P0.10 · 16</text>
+    <circle cx="515" cy="386" r="7" fill="#d0d7de"/><text x="502" y="390">P0.09 · 10</text>
+  </g>
+
+  <!-- wires to the right column -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+    <polyline points="640,110 580,110 522,126" stroke="#1f2328"/>
+    <polyline points="640,150 580,150 522,178" stroke="#d1242f"/>
+    <polyline points="640,190 580,190 522,178" stroke="#e3b341"/>
+    <polyline points="640,230 580,230 522,204" stroke="#f0883e"/>
+    <polyline points="640,270 580,270 522,230" stroke="#2da44e"/>
+  </g>
+  <g font-size="13" fill="#1f2328">
+    <text x="650" y="114"><tspan font-weight="700">Black</tspan> · DE-9 pin 6 · ground</text>
+    <text x="650" y="154"><tspan font-weight="700">Red</tspan> · DE-9 pin 7/9 · power</text>
+    <text x="650" y="194"><tspan font-weight="700">Yellow</tspan> · DE-9 pin 3 · chip select (tie high)</text>
+    <text x="650" y="234"><tspan font-weight="700">Orange</tspan> · DE-9 pin 4 · X axis</text>
+    <text x="650" y="274"><tspan font-weight="700">Green</tspan> · DE-9 pin 8 · Y axis</text>
+  </g>
+
+  <!-- wires to the left column -->
+  <polyline points="230,126 338,126" fill="none" stroke="#8c959f" stroke-width="5" stroke-linecap="round"/>
+  <text x="220" y="122" text-anchor="end" font-size="13" fill="#1f2328"><tspan font-weight="700">Gray</tspan> · DE-9 pin 2</text>
+  <text x="220" y="138" text-anchor="end" font-size="13" fill="#1f2328">reverse detect</text>
+
+  <g stroke-linecap="round" stroke-width="5">
+    <line x1="200" y1="210" x2="270" y2="210" stroke="#8250df"/>
+    <line x1="200" y1="250" x2="270" y2="250" stroke="#1f2328"/>
+    <line x1="201" y1="250" x2="269" y2="250" stroke="#f3ead2" stroke-width="3"/>
+  </g>
+  <g stroke="#cf222e" stroke-width="2.5">
+    <line x1="276" y1="204" x2="288" y2="216"/><line x1="288" y1="204" x2="276" y2="216"/>
+    <line x1="276" y1="244" x2="288" y2="256"/><line x1="288" y1="244" x2="276" y2="256"/>
+  </g>
+  <g font-size="13" fill="#1f2328" text-anchor="end">
+    <text x="190" y="206"><tspan font-weight="700">Purple</tspan> · DE-9 pin 1</text>
+    <text x="190" y="220" font-size="11" fill="#57606a">EEPROM clock, not connected</text>
+    <text x="190" y="246"><tspan font-weight="700">White</tspan> · DE-9 pin 5</text>
+    <text x="190" y="260" font-size="11" fill="#57606a">EEPROM data, not connected</text>
+  </g>
+
+  <!-- notes -->
+  <g font-size="13" fill="#1f2328">
+    <rect x="20" y="460" width="880" height="48" rx="6" fill="#fff8c5" stroke="#d4a72c"/>
+    <text x="34" y="480">Red and yellow share the VCC pad. Never use B+/RAW and never put 5 V on a GPIO.</text>
+    <text x="34" y="498">Wire colours come from dmadison's Sim-Racing-Arduino docs: confirm on your unit with a multimeter before soldering.</text>
+  </g>
+</svg>

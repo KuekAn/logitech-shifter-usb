@@ -1,0 +1,47 @@
+# nice!nano v2 on top of the Adafruit nRF52 core (adafruit:nrf52).
+# Pin numbers are raw nRF52840 GPIOs: P0.n = n, P1.n = 32 + n.
+
+menu.softdevice=SoftDevice
+menu.debug=Debug Level
+
+nicenano.name=nice!nano v2 (Adafruit core)
+nicenano.vid.0=0x1209
+nicenano.pid.0=0x0001
+nicenano.vid.1=0x239A
+nicenano.pid.1=0x00B3
+
+nicenano.upload.tool=adafruit:nrfutil
+nicenano.upload.protocol=nrfutil
+nicenano.upload.use_1200bps_touch=true
+nicenano.upload.wait_for_upload_port=true
+nicenano.upload.maximum_size=815104
+nicenano.upload.maximum_data_size=237568
+
+nicenano.build.mcu=cortex-m4
+nicenano.build.f_cpu=64000000
+nicenano.build.board=NRF52840_NICENANO
+nicenano.build.core=adafruit:nRF5
+nicenano.build.variant=nicenano
+nicenano.build.extra_flags=-DNRF52840_XXAA {build.flags.usb}
+nicenano.build.ldscript=nrf52840_s140_v6.ld
+nicenano.build.uf2_family=0xADA52840
+
+# USB identity: pid.codes test VID/PID, so it can never collide with the
+# pedal box (Arduino Leonardo 2341:8036) or Adafruit's own board IDs.
+nicenano.build.vid=0x1209
+nicenano.build.pid=0x0001
+nicenano.build.usb_manufacturer="DIY"
+nicenano.build.usb_product="H-Pattern Shifter"
+
+nicenano.menu.softdevice.s140v6=S140 6.1.1
+nicenano.menu.softdevice.s140v6.build.sd_name=s140
+nicenano.menu.softdevice.s140v6.build.sd_version=6.1.1
+nicenano.menu.softdevice.s140v6.build.sd_fwid=0x00B6
+
+nicenano.menu.debug.l0=Level 0 (Release)
+nicenano.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
+nicenano.menu.debug.l1=Level 1 (Error Message)
+nicenano.menu.debug.l1.build.debug_flags=-DCFG_DEBUG=1
+
+nicenano.build.logger_flags=-DCFG_LOGGER=0
+nicenano.build.sysview_flags=-DCFG_SYSVIEW=0
