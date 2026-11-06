@@ -1,0 +1,5 @@
+This project is licensed under the MIT License (see LICENSE), with one exception:
+
+The files in hardware/nicenano/nrf52/variants/nicenano/ are adapted from the
+Adafruit nRF52 Arduino core (pca10056 variant) and are licensed under the
+GNU Lesser General Public License v2.1, as stated in their headers.

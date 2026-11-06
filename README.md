@@ -257,5 +257,5 @@ Put the board in the bootloader first (double-tap reset) and use the bootloader'
 
 ## License
 
-MIT, see [LICENSE](LICENSE). The files in `hardware/nicenano/nrf52/variants/nicenano/` are adapted from the
+MIT, see [LICENSE](LICENSE) and [NOTICE](NOTICE). The files in `hardware/nicenano/nrf52/variants/nicenano/` are adapted from the
 Adafruit nRF52 core's pca10056 variant and remain under the **LGPL-2.1**, as noted in their headers.

@@ -19,9 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Exception: the files in hardware/nicenano/nrf52/variants/nicenano/ are adapted
-from the Adafruit nRF52 Arduino core (pca10056 variant) and are licensed under
-the GNU Lesser General Public License v2.1, as stated in their headers.
