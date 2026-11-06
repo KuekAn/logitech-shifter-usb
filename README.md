@@ -13,6 +13,7 @@ It deliberately has **no axes**, so a game can't grab the shifter by mistake whe
 
 - [What you need](#what-you-need)
 - [1. Wire it](#1-wire-it)
+- [Shortcut: prebuilt firmware](#shortcut-prebuilt-firmware) (no toolchain needed)
 - [2. Install the toolchain](#2-install-the-toolchain)
 - [3. Check the board's power switch (VccProbe)](#3-check-the-boards-power-switch-vccprobe)
 - [4. Check the wiring and calibrate (ShifterTest)](#4-check-the-wiring-and-calibrate-shiftertest)
@@ -66,6 +67,26 @@ The unit this was built on had *UF2 Bootloader 0.6.0, SoftDevice S140 6.1.1*.
   P0.n = `n`, P1.n = `32 + n`.
 
 Safety: if anything gets warm or looks shorted, unplug immediately.
+
+## Shortcut: prebuilt firmware
+
+If you wired it **exactly as above**, you can skip steps 2-4 and flash a ready-made file. Copying a file works on Windows, macOS and Linux.
+
+1. From the [latest release](https://github.com/KuekAn/logitech-shifter-usb/releases/latest), download the `.uf2` that matches how your board switches VCC (see [step 3](#3-check-the-boards-power-switch-vccprobe)):
+
+   | File | Board |
+   |---|---|
+   | `ShifterHID-<version>-vcc-high.uf2` | Clones where VCC is on when P0.13 is HIGH. This is the board the mod was built and tested on |
+   | `ShifterHID-<version>-vcc-low.uf2` | Genuine nice!nano v2, where VCC is on when P0.13 is LOW |
+
+   Not sure which you have? Just try one. Picking the wrong one doesn't harm anything. The shifter just gets no power, and Windows shows
+   **button 2 held down all the time**: with no power, both axes read 0, which the firmware treats as 2nd gear. If that happens, flash the other file.
+2. Double-tap reset. When the **NICENANO** drive appears, copy the `.uf2` onto it.
+   The drive closes by itself (Windows may warn that the copy was interrupted; that's normal), and the board restarts as **"H-Pattern Shifter"**.
+3. Check it in `joy.cpl` as described in [step 5](#5-flash-the-real-firmware-shifterhid).
+
+The gear thresholds in the prebuilt firmware come from the original unit. If gears are mis-detected or flicker on yours,
+follow steps 2-5 to calibrate and build your own. The release also includes `-dfu.zip` files for `adafruit-nrfutil` and the raw `.hex` files.
 
 ## 2. Install the toolchain
 
@@ -182,6 +203,7 @@ give the second one a different `build.pid` in
 
 | Symptom | Cause / fix |
 |---|---|
+| Prebuilt firmware: button 2 always on, nothing changes | Shifter unpowered: flash the other `vcc-*` `.uf2` ([details](#shortcut-prebuilt-firmware)) |
 | All readings are 0 | Shifter unpowered: wrong `EXT_VCC_ON` (run [VccProbe](#3-check-the-boards-power-switch-vccprobe)), or red/black not on VCC/GND |
 | X or Y stuck, jumps, or swapped | Wire colours differ on your unit, or a wiper is on a non-analog pad. Check with a multimeter |
 | Reverse never registers | Gray wire loose (`rev_pullup`=1, `rev_pulldown`=0 in ShifterTest) or on another pad |
@@ -205,6 +227,7 @@ tools/setup.ps1     installs arduino-cli + Adafruit nRF52 core 1.7.0
 tools/flash.ps1     build + flash over the bootloader's serial DFU (adafruit-nrfutil)
 tools/capture.ps1   logs the serial output to the screen / a CSV
 tools/joytest.ps1   watches the buttons through the Windows joystick API (what joy.cpl uses)
+tools/make-release.ps1  builds the release files (.uf2 / -dfu.zip / .hex, vcc-high and vcc-low)
 calibration/        reference recording from the original build
 docs/wiring.svg     wiring diagram
 ```

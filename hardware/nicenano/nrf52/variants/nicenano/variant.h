@@ -41,7 +41,9 @@ extern "C"
 
 // External VCC switch
 #define PIN_EXT_VCC          (13)
+#ifndef EXT_VCC_ON                       // can be overridden with -DEXT_VCC_ON=0 (see tools/make-release.ps1)
 #define EXT_VCC_ON           1
+#endif
 
 /*
  * Analog pins: A0..A7 are the chip's AIN0..AIN7, NOT the Pro Micro labels.
