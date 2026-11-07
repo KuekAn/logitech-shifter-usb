@@ -1,9 +1,10 @@
 # Logitech Shifter → USB
 
 Turn the **Logitech Driving Force Shifter** (the H-pattern shifter sold for the G29 / G920 / G923 wheels)
-into a stand-alone **USB game controller** with a **nice!nano v2** board. No wheel needed.
+into a stand-alone **USB or Bluetooth game controller** with a **nice!nano v2** board. No wheel needed.
 
-Windows shows it as **"H-Pattern Shifter"**: a joystick with 7 buttons.
+Windows shows it as **"Logitech H Shifter"**: a joystick with 7 buttons. Plug it in by USB, or add a small LiPo battery
+and use it wirelessly over Bluetooth LE (see [7. Bluetooth](#7-bluetooth-wireless)).
 
 | Button | 1 | 2 | 3 | 4 | 5 | 6 | 7 | none |
 |---|---|---|---|---|---|---|---|---|
@@ -19,6 +20,7 @@ It deliberately has **no axes**, so a game can't grab the shifter by mistake whe
 - [4. Check the wiring and calibrate (ShifterTest)](#4-check-the-wiring-and-calibrate-shiftertest)
 - [5. Flash the real firmware (ShifterHID)](#5-flash-the-real-firmware-shifterhid)
 - [6. Use it in games](#6-use-it-in-games)
+- [7. Bluetooth (wireless)](#7-bluetooth-wireless)
 - [Troubleshooting](#troubleshooting)
 - [How it works](#how-it-works)
 
@@ -61,7 +63,8 @@ The unit this was built on had *UF2 Bootloader 0.6.0, SoftDevice S140 6.1.1*.
 
 - Wire colours are from [dmadison's Sim-Racing-Arduino docs](https://dmadison.github.io/Sim-Racing-Arduino/docs/logitech_shifter.html).
   **Confirm them with a multimeter on your unit** before soldering: continuity from each wire to the DE-9 pin.
-- The shifter electronics run happily on 3.3 V. **Do not use the B+/RAW pad**, and never put 5 V on any nRF52840 pin.
+- The shifter electronics run happily on 3.3 V. **Never power the shifter from the B+/RAW pad** (that is the battery input,
+  see [7. Bluetooth](#7-bluetooth-wireless)), and never put 5 V on any nRF52840 pin.
 - X and Y must go to analog-capable pins (P0.02, P0.29, P0.31 on the Pro Micro footprint). **A0 (P1.15) is not analog** on the nRF52840.
 - If you use different pads, change the `PIN_*` constants at the top of each sketch. The sketches use raw GPIO numbers:
   P0.n = `n`, P1.n = `32 + n`.
@@ -82,7 +85,8 @@ If you wired it **exactly as above**, you can skip steps 2-4 and flash a ready-m
    Not sure which you have? Just try one. Picking the wrong one doesn't harm anything. The shifter just gets no power, and Windows shows
    **button 2 held down all the time**: with no power, both axes read 0, which the firmware treats as 2nd gear. If that happens, flash the other file.
 2. Double-tap reset. When the **NICENANO** drive appears, copy the `.uf2` onto it.
-   The drive closes by itself (Windows may warn that the copy was interrupted; that's normal), and the board restarts as **"H-Pattern Shifter"**.
+   The drive closes by itself (Windows may warn that the copy was interrupted; that's normal), and the board restarts as **"Logitech H Shifter"**.
+   Later updates don't need the reset button: open the board's serial port (115200 baud), type `uf2` and press Enter, and the drive appears again.
 3. Check it in `joy.cpl` as described in [step 5](#5-flash-the-real-firmware-shifterhid).
 
 The gear thresholds in the prebuilt firmware come from the original unit. If gears are mis-detected or flicker on yours,
@@ -177,14 +181,20 @@ powershell -ExecutionPolicy Bypass -File tools\flash.ps1 -Sketch ShifterHID
 ```
 
 Check it in Windows:
-- **Win+R → `joy.cpl`**: "H-Pattern Shifter" is listed. Open **Properties** and shift: buttons 1-7 light up.
+- **Win+R → `joy.cpl`**: "Logitech H Shifter" is listed. Open **Properties** and shift: buttons 1-7 light up.
 - Or from the terminal, logging each gear change as Windows sees it:
   ```powershell
   powershell -ExecutionPolicy Bypass -File tools\joytest.ps1 -Seconds 30
   ```
 
-ShifterHID keeps a USB serial port, so `capture.ps1` still works. It prints `x,y,reverse,gear` for re-tuning,
-and `flash.ps1` can update the board without touching the reset button.
+ShifterHID keeps a USB serial port, so `capture.ps1` still works, and `flash.ps1` can update the board without touching the reset button.
+It prints `x,y,reverse,gear,link,vbat_mv` for re-tuning:
+- `link` is `USB`, `BLE` (Bluetooth connected), `ADV` (waiting for a Bluetooth host) or `WAIT` (USB just went away).
+- `vbat_mv` is the battery voltage in mV. With no battery fitted, it shows the USB supply.
+
+It also accepts two commands, typed into a serial monitor and followed by Enter:
+- `unpair` forgets all paired Bluetooth hosts.
+- `uf2` restarts into the bootloader with the NICENANO drive.
 
 ## 6. Use it in games
 
@@ -197,7 +207,42 @@ afterwards, the game sees 6th for a moment before R.
 **Several DIY controllers:** the board uses USB ID `1209:0001`, a [pid.codes](https://pid.codes/1209/0001/) test ID.
 It can't collide with an Arduino Leonardo (`2341:8036`), which many DIY pedal boxes use. If you build two of these,
 give the second one a different `build.pid` in
-[`hardware/nicenano/nrf52/boards.txt`](hardware/nicenano/nrf52/boards.txt). That file also holds the name Windows shows (`usb_product`).
+[`hardware/nicenano/nrf52/boards.txt`](hardware/nicenano/nrf52/boards.txt). That file also holds the name Windows shows over USB (`usb_product`).
+The Bluetooth name is `DEVICE_NAME` at the top of [`ShifterHID/ShifterHID.ino`](ShifterHID/ShifterHID.ino).
+
+## 7. Bluetooth (wireless)
+
+The nRF52840 has Bluetooth LE built in, so the same firmware also works as a wireless joystick called **"Logitech H Shifter"**.
+It uses only one link at a time:
+
+| Power / connection | What it does |
+|---|---|
+| USB cable to a computer (data) | Wired USB joystick. Bluetooth is off, so a game never sees the shifter twice |
+| Battery only, or a USB wall charger | After 2 s without USB data, it advertises over Bluetooth and reconnects to the host it is paired with |
+
+> [!NOTE]
+> **Most power banks don't work.** The board draws only a few milliamps, so a typical power bank decides nothing is plugged in
+> and switches itself off after a few seconds. The shifter then drops off Bluetooth (in testing it stayed connected for about 16 s).
+> Use a USB wall charger ("power brick"), a power bank with an always-on / low-current mode, or a LiPo battery (below) to make it truly wireless.
+
+**Battery.** Solder a single-cell 3.7 V LiPo to **B+** (top right pin) and **GND**, or to the B+/B- battery pads if your board has them.
+Put a slide switch in the B+ wire so it doesn't drain while stored.
+The nice!nano charges the battery whenever USB is plugged in. The firmware has no sleep mode: switched on, it draws power all the time
+(the board plus the shifter's sensors), so use the switch.
+
+**Pairing (Windows).**
+1. Power it **without** a USB data connection: battery or a USB wall charger (not a power bank, see the note above).
+   The blue LED blinks briefly once a second while it advertises (if you can see it; inside the shifter body you usually can't).
+2. Open **Settings → Bluetooth & devices → Add device → Bluetooth** and pick **Logitech H Shifter**.
+3. It appears in `joy.cpl` like the wired version. Windows also shows its battery level under Bluetooth & devices.
+
+Later it reconnects by itself. To pair it with a different computer, first remove it in Windows, then clear the pairing on the shifter:
+plug it in by USB, open its serial port and type `unpair`.
+
+**Latency.** USB reports every 1 ms. Bluetooth asks for a 7.5-15 ms connection interval, which is fine for gear changes.
+The firmware resends the current gear once a second, so the host can't get stuck on a stale gear.
+
+**LED.** On USB the LED is lit while in gear. On Bluetooth it blinks while advertising and stays off when connected, to save battery.
 
 ## Troubleshooting
 
@@ -212,6 +257,11 @@ give the second one a different `build.pid` in
 | `flash.ps1`: "Adafruit nRF52 core 1.7.0 not found" | Run `tools\setup.ps1` |
 | "running scripts is disabled on this system" | Use `powershell -ExecutionPolicy Bypass -File ...` as shown above |
 | Compile error `Adafruit_USBD_CDC.h: No such file` | Build through `flash.ps1`, which adds the flags the local board definition needs |
+| `joy.cpl` still shows an old name ("H-Pattern Shifter") | Windows caches joystick names per USB ID. Delete the registry key `HKEY_CURRENT_USER\System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_1209&PID_0001` and replug |
+| Bluetooth: "Logitech H Shifter" not in the Add device list | It doesn't advertise while plugged into a computer by USB. Power it from a battery or charger; the LED should blink once a second |
+| Bluetooth: works for a few seconds, then gears stop or `joy.cpl` loses it | Power bank switched itself off at the board's low current draw. Use a wall charger or a LiPo. Windows Settings may still say "Connected" for a paired device even when the link is down |
+| Bluetooth: paired, but no gears after re-pairing or reflashing | Remove the device in Windows, type `unpair` on the serial port, then pair again |
+| Bluetooth battery level is 0 % | The board doesn't feed the battery to the chip's VDDH pin like a genuine nice!nano: check `vbat_mv` on the serial port |
 | Not in joy.cpl | Check Device Manager for "HID-compliant game controller" under `USB\VID_1209&PID_0001`; reflash ShifterHID |
 
 ## How it works
@@ -241,7 +291,7 @@ So [`hardware/nicenano`](hardware/nicenano) adds a small variant that:
 - uses the internal RC oscillator;
 - drives the LED on P0.15;
 - turns VCC on at boot (`EXT_VCC_ON`);
-- sets the USB identity (`1209:0001`, "H-Pattern Shifter").
+- sets the USB identity (`1209:0001`, "Logitech H Shifter").
 
 It reuses the Adafruit core, libraries and toolchain. Arduino can't find the core's bundled libraries through a referenced core,
 so `flash.ps1` passes `--libraries` and `runtime.platform.path`.
@@ -254,7 +304,13 @@ Note: in this variant, `A0`..`A7` are the chip's AIN0..AIN7, **not** the Pro Mic
 - **Engaging:** Y beyond an engage threshold puts the shifter in a gear.
 - **Releasing:** it stays in that gear until Y comes back past the release threshold.
 - **Reverse:** reported only in the 6th slot with the reverse line high. A push-down anywhere else is ignored.
-- **Sampling:** the ADC runs ratiometric to VDD (`AR_VDD4`), 10-bit, 8× oversampling, about once a millisecond. A report goes out only when the gear changes.
+- **Sampling:** the ADC runs ratiometric to VDD (`AR_VDD4`), 10-bit, 8× oversampling, about once a millisecond. A report goes out when the gear changes, and once a second as a refresh.
+
+### Bluetooth
+
+- **HID over GATT:** Adafruit's Bluefruit library (`BLEHidGeneric`) sends the same 7-button report as USB, with report ID 1. It also provides Device Information and Battery services.
+- **Battery:** the voltage comes from the chip's VDDH/5 input against the internal 0.6 V reference. It is mapped to a percentage with a rough LiPo curve.
+- **Pairing:** "Just Works", stored in flash by Bluefruit, which needs SoftDevice S140 (already on the board for the bootloader).
 
 ### Other operating systems
 

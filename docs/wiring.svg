@@ -28,7 +28,7 @@
 
   <!-- right column pads: B+ GND RST VCC P0.31 P0.29 P0.02 P1.15 P1.13 P1.11 P0.10 P0.09 -->
   <g font-size="11" fill="#ffffff" text-anchor="end">
-    <circle cx="515" cy="100" r="7" fill="#d0d7de"/><text x="502" y="104">B+ / RAW ✕</text>
+    <circle cx="515" cy="100" r="7" fill="#d0d7de"/><text x="502" y="104">B+ (LiPo)</text>
     <circle cx="515" cy="126" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="502" y="130" font-weight="700">GND</text>
     <circle cx="515" cy="152" r="7" fill="#d0d7de"/><text x="502" y="156">RST</text>
     <circle cx="515" cy="178" r="7" fill="#ffd33d" stroke="#1f2328" stroke-width="2"/><text x="502" y="182" font-weight="700">VCC (3.3 V)</text>
@@ -82,7 +82,7 @@
   <!-- notes -->
   <g font-size="13" fill="#1f2328">
     <rect x="20" y="460" width="880" height="48" rx="6" fill="#fff8c5" stroke="#d4a72c"/>
-    <text x="34" y="480">Red and yellow share the VCC pad. Never use B+/RAW and never put 5 V on a GPIO.</text>
+    <text x="34" y="480">Red and yellow share the VCC pad. B+ is only for an optional LiPo battery (Bluetooth). Never put 5 V on a GPIO.</text>
     <text x="34" y="498">Wire colours come from dmadison's Sim-Racing-Arduino docs: confirm on your unit with a multimeter before soldering.</text>
   </g>
 </svg>

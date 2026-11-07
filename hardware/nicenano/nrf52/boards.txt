@@ -31,7 +31,7 @@ nicenano.build.uf2_family=0xADA52840
 nicenano.build.vid=0x1209
 nicenano.build.pid=0x0001
 nicenano.build.usb_manufacturer="DIY"
-nicenano.build.usb_product="H-Pattern Shifter"
+nicenano.build.usb_product="Logitech H Shifter"
 
 nicenano.menu.softdevice.s140v6=S140 6.1.1
 nicenano.menu.softdevice.s140v6.build.sd_name=s140
