@@ -5,6 +5,12 @@ into a stand-alone **USB or Bluetooth game controller** with a **nice!nano v2** 
 
 # This mod's code is created by Claude. I use on my unit and it does work flawlessly. 
 
+<img width="3072" height="4096" alt="IMG_20261109_125703" src="https://github.com/user-attachments/assets/e5b1bed9-d651-4262-9d35-6ccda3d2e610" />
+
+https://github.com/user-attachments/assets/575bc071-c07e-40ed-bba9-69facfbd9f9a
+
+
+
 Windows shows it as **"Logitech H Shifter"**: a joystick with 7 buttons. Plug it in by USB, or add a small LiPo battery
 and use it wirelessly over Bluetooth LE (see [7. Bluetooth](#7-bluetooth-wireless)).
 
