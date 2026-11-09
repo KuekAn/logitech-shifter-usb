@@ -3,7 +3,7 @@
 Turn the **Logitech Driving Force Shifter** (the H-pattern shifter sold for the G29 / G920 / G923 wheels)
 into a stand-alone **USB or Bluetooth game controller** with a **nice!nano v2** board. No wheel needed.
 
-# This mod's code is created by Claude. I use on my unit and it does work flawlessly. 
+This mod's code is created by Claude. I use on my unit and it does work fine. 
 
 <img width="3072" height="4096" alt="IMG_20261109_125703" src="https://github.com/user-attachments/assets/e5b1bed9-d651-4262-9d35-6ccda3d2e610" />
 
